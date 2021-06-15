@@ -4,9 +4,9 @@ const cors = require('cors')
 const { newReserva, newEmpleado, getReservas, getEmpleados } = require('./services')
 
 const app = express()
+app.use(cors({ origin: true }))
 
 const createServer = () => {
-  app.use(cors())
   app.use(express.json())
   app.get('/reservas', (req, res) => {
     getReservas().then(reservas => {
