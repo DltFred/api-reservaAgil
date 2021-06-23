@@ -8,6 +8,7 @@ app.use(cors({ origin: true }))
 
 const createServer = () => {
   app.use(express.json())
+
   app.get('/reservas', (req, res) => {
     getReservas().then(reservas => {
       res.json(reservas)
@@ -30,6 +31,7 @@ const createServer = () => {
 
   app.post('/empleados', (req, res) => {
     const empleado = req.body
+    console.log(empleado)
     newEmpleado(empleado).then(reservas => {
       res.end()
     })

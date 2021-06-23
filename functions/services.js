@@ -1,48 +1,50 @@
 const firebase = require('firebase-admin')
+require('dotenv').config()
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDO0Xd8DFgox228HDVMd7ja7MJj7FFj5gw',
-  authDomain: 'reserva-agil.firebaseapp.com',
-  projectId: 'reserva-agil',
-  storageBucket: 'reserva-agil.appspot.com',
-  messagingSenderId: '952350697672',
-  appId: '1:952350697672:web:117e03744d99f9558addfd'
+  apiKey: process.env.API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  projectId: process.env.PROJECT_ID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId: process.env.MESSAGING_SENDER_ID,
+  appId: process.env.APP_ID
 }
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig)
 
 const db = firebase.firestore()
 
-const newDoc = db.collection('reservas').doc()
 
 const newReserva = async (dataReserva) => {
+  const newDoc = db.collection('reservas').doc()
   const { apellido, cantPersonas, fecha, nombre, sede, telefono } = dataReserva
   await newDoc.set({
-    apellido: apellido,
-    cant_personas: cantPersonas,
-    fecha: fecha,
     nombre: nombre,
+    apellido: apellido,
+    fecha: fecha,
+    telefono: telefono,
+    cant_personas: cantPersonas,
     sede: sede,
-    telefono: telefono
   })
 }
 
 const newEmpleado = async (dataEmpleado) => {
+  const newDoc = db.collection('empleados').doc()
   const { apellido, email, rol, nombre, sede, telefono } = dataEmpleado
   await newDoc.set({
-    apellido: apellido,
-    email: email,
     nombre: nombre,
+    apellido: apellido,
     rol: rol,
+    telefono: telefono,
+    email: email,
     sede: sede,
-    telefono: telefono
   })
 }
 
 const getReservas = async () => {
   const snapshot = await db.collection('reservas').get()
   const response = []
-  await snapshot.forEach((doc) => {
+  snapshot.forEach((doc) => {
     response.push(doc.data())
   })
   return response
@@ -51,7 +53,7 @@ const getReservas = async () => {
 const getEmpleados = async () => {
   const snapshot = await db.collection('empleados').get()
   const response = []
-  await snapshot.forEach((doc) => {
+  snapshot.forEach((doc) => {
     response.push(doc.data())
   })
   return response
